@@ -30,5 +30,5 @@ source .venv/bin/activate
 Para instalar las dependencias:
 
 ```bash
-pip install -r requirements.txt
+pip install -r requirements.py
 ```
