@@ -5,7 +5,7 @@ from sklearn.model_selection import cross_val_score
 from sklearn.model_selection import train_test_split
 
 # cargar dataset
-data = pd.read_csv("winequality-red.csv")
+data = pd.read_csv("winequality-red.csv", sep=";")
 
 # convertir problema a clasificación binaria
 data["quality"] = (data["quality"] >= 6).astype(int)
