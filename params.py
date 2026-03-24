@@ -1,4 +1,4 @@
-class Params:
+class Param:
     def __init__(
         self,
         n_estimators: int = 100,
