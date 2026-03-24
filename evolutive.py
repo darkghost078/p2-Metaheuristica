@@ -1,4 +1,5 @@
 from evaluate import evaluate_solution
+from generateIndividual import generateIndividual
 import random
 from params import Param 
 
@@ -114,9 +115,8 @@ def auschwitz(population, childs):
 
 population = []
 
-#Generación de la población inicial (falta llamar a la funcion random)
 for i in range(20):
-    population.append()
+    population.append(generateIndividual())
 
 
 while(Gen>0):
