@@ -1,4 +1,4 @@
-from generateIndividual import generateIndividual
+from generateIndividual import bestIndividual
 from evaluate import evaluate_solution
 from metrics import metrics
 import numpy as np
@@ -12,7 +12,7 @@ def random_search(iter):
     # iter=20
     
     for i in range(iter):
-        individual = generateIndividual()
+        individual = bestIndividual()
         
         fitness_actual = evaluate_solution(individual)
         fitness.append(fitness)
@@ -25,7 +25,7 @@ def random_search(iter):
         
     print(f"\n Best fitness (Random Search): {mejor_fitness_global:.4f}")
 
-    metrics(fitness)
+    metrics(fitness_actual)
 
     return mejor_fitness_global, mejor_individual_global
 
