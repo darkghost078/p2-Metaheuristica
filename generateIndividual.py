@@ -29,6 +29,6 @@ def bestIndividual():
             best_fitness = actual_fitness
             best = actual_individual
 
-    print(f"Mejor fitness de los 5: {best_fitness}")
+    print(f"Best fitness of the five: {best_fitness}")
     
     return best
