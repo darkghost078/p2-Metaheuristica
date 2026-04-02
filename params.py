@@ -85,3 +85,41 @@ class Param:
             self.max_leaf_nodes,
             self.min_impurity_decrease
         ]
+    
+
+
+
+
+    def __eq__(self, other):
+        if not isinstance(other, Param):
+            return False
+        
+        if self.n_estimators != other.n_estimators:
+            return False
+        
+        if self.min_samples_split != other.min_samples_split:
+            return False
+        
+        if self.min_samples_leaf != other.min_samples_leaf:
+            return False
+        
+        if self.max_features != other.max_features:
+            return False
+        
+        if self.bootstrap != other.bootstrap:
+            return False
+        
+        if self.criterion != other.criterion:
+            return False
+        
+        if self.class_weight != other.class_weight:
+            return False
+        
+        if self.max_leaf_nodes != other.max_leaf_nodes:
+            return False
+        
+        if self.min_impurity_decrease != other.min_impurity_decrease:
+            return False
+        
+        return True
+        

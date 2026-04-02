@@ -1,11 +1,8 @@
 from evaluate import evaluate_solution
 from generateIndividual import generateIndividual
 import random
-from params import Param 
-
-Gen = 20
-alpha = 0.8
-beta = 0.2
+from params import Param
+import copy
 
 def crossover(param1, param2):
     return Param(
@@ -45,85 +42,115 @@ def mutation(param):
     elif(nrand == 10):
         param.min_impurity_decrease = random.uniform(0,0.1)
 
-def powerTournament(population):
+def powerTournament(population, alpha, beta):
     childs = []
-    for i in range(len(population)):
+    for _ in range(len(population)//2):
         vp = population.copy()
 
-        a = vp[random.randint(0,len(vp))]
+        a = vp[random.randint(0,len(vp)-1)]
         vp.remove(a)
-        b = vp[random.randint(0,len(vp))]
+        b = vp[random.randint(0,len(vp)-1)]
         vp.remove(b)
-        c = vp[random.randint(0,len(vp))]
+        c = vp[random.randint(0,len(vp)-1)]
 
-        if(evaluate_solution(a)>evaluate_solution(b)):
-            if(evaluate_solution(a)>evaluate_solution(c)):
-                p1 = a
+        a_fit=a[1]
+        b_fit=b[1]
+        c_fit=c[1]
+
+        if(a_fit>b_fit):
+            if(a_fit>c_fit):
+                p1 = a[0]
             else:
-                p1 = c
+                p1 = c[0]
         else:
-            if(evaluate_solution(b)>evaluate_solution(c)):
-                p1 = b
+            if(b_fit>c_fit):
+                p1 = b[0]
             else:
-                p1 = c
+                p1 = c[0]
 
         vp = population.copy()
 
-        a = vp[random.randint(0,len(vp))]
+        a = vp[random.randint(0,len(vp)-1)]
         vp.remove(a)
-        b = vp[random.randint(0,len(vp))]
+        b = vp[random.randint(0,len(vp)-1)]
         vp.remove(b)
-        c = vp[random.randint(0,len(vp))]
+        c = vp[random.randint(0,len(vp)-1)]
 
-        if(evaluate_solution(a)>evaluate_solution(b)):
-            if(evaluate_solution(a)>evaluate_solution(c)):
-                p2 = a
+        a_fit=a[1]
+        b_fit=b[1]
+        c_fit=c[1]
+
+        if(a_fit>b_fit):
+            if(a_fit>c_fit):
+                p2 = a[0]
             else:
-                p2 = c
+                p2 = c[0]
         else:
-            if(evaluate_solution(b)>evaluate_solution(c)):
-                p2 = b
+            if(b_fit>c_fit):
+                p2 = b[0]
             else:
-                p2 = c        
+                p2 = c[0]
+
+        
 
         p = random.random()
         if(p <= alpha):
             childs.append(crossover(p1,p2))
             childs.append(crossover(p2,p1))
         else:
-            childs.append(p1)
-            childs.append(p2)
+            childs.append(copy.deepcopy(p1))
+            childs.append(copy.deepcopy(p2))
 
-    hiroshima(childs)
+    aplyMutation(childs, beta)
+    childs=fitness(childs)
     return childs
 
-def hiroshima(childs):
+def aplyMutation(childs, beta):
     for i in range(len(childs)):
         p = random.random()
         if(p <= beta):
             mutation(childs[i])
 
-def auschwitz(population, childs):
-    bests = population + childs
-    aux = bests.copy()
-    bests = list(set(aux))
-    print(aux==bests)
-    bests = sorted(bests, key=lambda child: evaluate_solution(child))
 
-    return bests[len(bests)-len(population):]
-
-
-population = []
-
-for i in range(20):
-    population.append(generateIndividual())
-
-
-while(Gen>0):
-    Gen-=1
-    p = random.random()
+def mergeArrays(a1, a2):
+    result=[]
+    aux=[]
     
-    childs = powerTournament(population)
+    population=a1+a2
 
-    bests = auschwitz(population, childs)
-    population = bests
+    for ind in population:
+        if ind[0] not in aux:
+            aux.append(ind[0])
+            result.append(ind)
+    
+    return result
+
+def finalPopulation(population, childs):
+    bests = mergeArrays(population, childs)
+    bests = sorted(bests, key=lambda childs: childs[1], reverse=True)
+
+    return bests[:len(population)]
+
+def fitness(population):
+    result=[]
+    for i in range(len(population)):
+        result.append((population[i],evaluate_solution(population[i])))
+    return result
+
+def evolutive(Gen = 20, alpha = 0.8, beta = 0.2):
+    population = []
+
+    for _ in range(20):
+        individual=generateIndividual()
+        population.append((individual,evaluate_solution(individual)))
+
+
+    while(Gen>0):
+        print(f"Gen Actual: {Gen}")
+        Gen-=1
+        childs = powerTournament(population, alpha, beta)
+
+        bests = finalPopulation(population, childs)
+        population = bests
+        print(f"Best Fitness: {population[0][1]}")
+    return population
