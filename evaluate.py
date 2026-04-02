@@ -16,16 +16,16 @@ y = data["quality"]
 def evaluate_solution(params):
 
     model = RandomForestClassifier(
-        n_estimators=int(params[0]),
-        max_depth=int(params[1]),
-        min_samples_split=int(params[2]),
-        min_samples_leaf=int(params[3]),
-        max_features=float(params[4]),
-        bootstrap=bool(params[5]),
-        criterion="gini" if params[6] == 0 else "entropy",
-        class_weight=None if params[7] == 0 else "balanced",
-        max_leaf_nodes=int(params[8]),
-        min_impurity_decrease=float(params[9]),
+        n_estimators=int(params.n_estimators),
+        max_depth=int(params.max_depth),
+        min_samples_split=int(params.min_samples_split),
+        min_samples_leaf=int(params.min_samples_leaf),
+        max_features=float(params.max_features),
+        bootstrap=bool(params.bootstrap),
+        criterion="gini" if params.criterion == 0 else "entropy",
+        class_weight=None if params.class_weight == 0 else "balanced",
+        max_leaf_nodes=int(params.max_leaf_nodes),
+        min_impurity_decrease=float(params.min_impurity_decrease),
         random_state=42
     )
     
