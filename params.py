@@ -71,3 +71,17 @@ class Param:
             "max_leaf_nodes": self.max_leaf_nodes,
             "min_impurity_decrease": self.min_impurity_decrease
         }
+
+    def to_list(self) -> list:
+        return [
+            self.n_estimators,
+            self.max_depth,
+            self.min_samples_split,
+            self.min_samples_leaf,
+            self.max_features,
+            self.bootstrap,
+            self.criterion,
+            self.class_weight,
+            self.max_leaf_nodes,
+            self.min_impurity_decrease
+        ]

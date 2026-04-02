@@ -14,8 +14,8 @@ def random_search(iter):
     for i in range(iter):
         individual = bestIndividual()
         
-        fitness_actual = evaluate_solution(individual)
-        fitness.append(fitness)
+        fitness_actual = evaluate_solution(individual.to_list())
+        fitness.append(fitness_actual)
         
         if fitness_actual > mejor_fitness_global:
             mejor_fitness_global = fitness_actual
@@ -25,10 +25,10 @@ def random_search(iter):
         
     print(f"\n Best fitness (Random Search): {mejor_fitness_global:.4f}")
 
-    metrics(fitness_actual)
+    metrics(fitness)
 
     return mejor_fitness_global, mejor_individual_global
 
 if __name__ == "__main__":
     # Ejecutamos primero el Random Search
-    mejor_fit_rs, mejor_ind_rs = random_search(2)
+    mejor_fit_rs, mejor_ind_rs = random_search(20)

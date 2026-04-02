@@ -1,20 +1,20 @@
 import random
 from evaluate import evaluate_solution
+from params import Param
 
 def generateIndividual():
-    individual = [
-        random.randint(10, 300),          # n_estimators (entero) 
-        random.randint(2, 30),            # max_depth (entero) 
-        random.randint(2, 20),            # min_samples_split (entero) 
-        random.randint(1, 20),            # min_samples_leaf (entero) 
-        random.uniform(0.1, 1.0),         # max_features (real) 
-        random.randint(0, 1),             # bootstrap (binario) 
-        random.randint(0, 1),             # criterion (categórico: 0=gini, 1=entropy) 
-        random.randint(0, 1),             # class_weight (binario: 0=None, 1=balanced) 
-        random.randint(10, 200),          # max_leaf_nodes (entero) 
-        random.uniform(0.0, 0.1)          # min_impurity_decrease (real) 
-    ]
-    return individual
+    return Param(
+        n_estimators=random.randint(10, 300),
+        max_depth=random.randint(2, 30),
+        min_samples_split=random.randint(2, 20),
+        min_samples_leaf=random.randint(1, 20),
+        max_features=random.uniform(0.1, 1.0),
+        bootstrap=random.randint(0, 1),
+        criterion=random.randint(0, 1),
+        class_weight=random.randint(0, 1),
+        max_leaf_nodes=random.randint(10, 200),
+        min_impurity_decrease=random.uniform(0.0, 0.1)
+    )
 
 def bestIndividual():
     best = None
@@ -23,7 +23,7 @@ def bestIndividual():
     for _ in range(5):
         actual_individual = generateIndividual()
         
-        actual_fitness = evaluate_solution(actual_individual)
+        actual_fitness = evaluate_solution(actual_individual.to_list())
         
         if actual_fitness > best_fitness:
             best_fitness = actual_fitness
