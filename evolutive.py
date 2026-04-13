@@ -145,38 +145,49 @@ def generatePopulation(population, n):
     return population
 
 
-def evolutive(Gen = 10, alpha = 0.8, beta = 0.2):
+def evolutive(Gen = 20, alpha = 0.8, beta = 0.2):
     population = []
-    n=50
-    elite_size=5
-    population=generatePopulation(population,n)
+    n = 20
+    elite_size = 2
+    population = generatePopulation(population, n)
 
-    reset_count=0
-    prev_best=0
-    while(Gen>0):
+    reset_count = 0
+    prev_best = 0
+
+    history = [] 
+
+    while Gen > 0:
         print(f"Gen Actual: {Gen}")
-        Gen-=1
-        childs = powerTournament(population, alpha, beta)
+        Gen -= 1
 
+        childs = powerTournament(population, alpha, beta)
         bests = finalPopulation(population, childs)
         population = bests
-        print(f"Best Fitness: {population[0][1]}")
 
-        if (population[0][1]-prev_best )<0.005:
-            reset_count+=1
+        best_fit = population[0][1]
+        history.append(best_fit)
+
+        print(f"Best Fitness: {best_fit}")
+
+        # UMBRAL DE MEJORA AJUSTADO
+        if (best_fit - prev_best) < 0.005:
+            reset_count += 1
             print("Fitness change not enough")
         else:
-            reset_count=0
+            reset_count = 0
             print("Fitness change reset")
 
-        prev_best=population[0][1]
-        
-        if reset_count>=3:
-            elite=population[:elite_size]
-            new_population=[]
-            new_population=generatePopulation(new_population,n-elite_size)
-            population=elite+new_population
-            reset_count=0
+        prev_best = best_fit
+
+        # NÚMERO DE GENERACIONES ANTES DEL RESET AJUSTADO
+        if reset_count >= 3:
+            elite = population[:elite_size]
+            new_population = []
+            new_population = generatePopulation(new_population, n - elite_size)
+            population = elite + new_population
+            reset_count = 0
             print("Reseting population")
 
-    return population
+    return population, history
+
+
