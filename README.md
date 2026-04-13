@@ -32,3 +32,16 @@ Para instalar las dependencias:
 ```bash
 pip install -r requirements.py
 ```
+
+# Contenido del repositorio
+
+El repositorio incluye:
+
+- **Scripts `.py`** con la implementación modular del proyecto (algoritmo genético, random search, grid search, utilidades, etc.).
+- **Un documento Jupyter Notebook (`.ipynb`)** donde se encuentra **todo el código completamente comentado**, junto con:
+  - Explicaciones paso a paso.
+  - Ejecuciones reales.
+  - Gráficas generadas.
+  - Análisis detallado de los resultados.
+
+Este notebook sirve como documento principal para entender el flujo completo del trabajo y reproducir los experimentos de forma interactiva.
