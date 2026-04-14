@@ -3,7 +3,7 @@ from generateIndividual import bestIndividual
 from evaluate import evaluate_solution
 
 def metrics(fitness_scores):
-           
+
     mean = np.mean(fitness_scores)
     standard_deviation = np.std(fitness_scores)
     best_absolute = np.max(fitness_scores)

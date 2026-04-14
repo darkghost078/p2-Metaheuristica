@@ -4,17 +4,21 @@ import numpy as np
 def evolutiveTest():
 
     population=evolutive(beta=0.5, alpha=0.6)
-
-    fitnesses=[]
-    for i in range (len (population)):
-        fitnesses.append(population[i][1])
-
-    print("\n--- Results ---")
-    print(f"Best Individual Score: {fitnesses[0]}")
-    print(f"Population Mean: {np.mean(fitnesses)}")
-    print(f"Population Desviation: {np.std(fitnesses)}")
-
+    return population[0]
     
 
 if __name__ == "__main__":
-    evolutiveTest()
+    results=[]
+    for _ in range(5):
+        results.append(evolutiveTest())
+
+    fitnesses=[]
+    for i in range (len (results)):
+        fitnesses.append(results[i][1])
+
+    fitnesses.sort(reverse=True)
+
+    print("\n--- Results ---")
+    print(f"Best Individual Score: {fitnesses[0]}")
+    print(f"Test Mean: {np.mean(fitnesses)}")
+    print(f"Test Desviation: {np.std(fitnesses)}")

@@ -16,11 +16,11 @@ def generateIndividual():
         min_impurity_decrease=random.uniform(0.0, 0.1)
     )
 
-def bestIndividual():
+def bestIndividual(iter):
     best = None
-    best_fitness = -1.0 
+    best_fitness = -1.0
     
-    for _ in range(5):
+    for _ in range(iter):
         actual_individual = generateIndividual()
         
         actual_fitness = evaluate_solution(actual_individual.to_list())
