@@ -2,7 +2,7 @@ from evaluate import evaluate_solution
 from generateIndividual import generateIndividual
 import random
 from params import Param
-import copy
+import gc
 
 def crossover(param1, param2):
     return Param(
@@ -99,8 +99,8 @@ def powerTournament(population, alpha, beta):
             childs.append(crossover(p1,p2))
             childs.append(crossover(p2,p1))
         else:
-            childs.append(copy.deepcopy(p1))
-            childs.append(copy.deepcopy(p2))
+            childs.append(p1.clone())
+            childs.append(p2.clone())
 
     aplyMutation(childs, beta)
     childs=fitness(childs)
@@ -127,22 +127,25 @@ def mergeArrays(a1, a2):
     return result
 
 def finalPopulation(population, childs):
-    bests = mergeArrays(population, childs)
-    bests = sorted(bests, key=lambda childs: childs[1], reverse=True)
-
-    return bests[:len(population)]
+    # Simplemente junta y ordena. No busques duplicados de forma manual con "not in"
+    combined = population + childs
+    # Ordenar por el fitness (que es el índice [1] de tu tupla)
+    combined.sort(key=lambda x: x[1], reverse=True)
+    # Te quedas con los N mejores y el resto se descarta (liberando RAM)
+    return combined[:len(population)]
 
 def fitness(population):
     result=[]
     for i in range(len(population)):
-        result.append((population[i],evaluate_solution(population[i])))
+        result.append((population[i], evaluate_solution_param(population[i])))
     return result
 
 def generatePopulation(population, n):
     for _ in range(n):
         individual=generateIndividual()
-        population.append((individual,evaluate_solution(individual)))
+        population.append((individual, evaluate_solution_param(individual)))
     return population
+
 
 
 def evolutive(Gen = 20, alpha = 0.8, beta = 0.2):
@@ -154,7 +157,6 @@ def evolutive(Gen = 20, alpha = 0.8, beta = 0.2):
     reset_count = 0
     prev_best = 0
 
-    history = [] 
 
     while Gen > 0:
         print(f"Gen Actual: {Gen}")
@@ -165,8 +167,6 @@ def evolutive(Gen = 20, alpha = 0.8, beta = 0.2):
         population = bests
 
         best_fit = population[0][1]
-        history.append(best_fit)
-
         print(f"Best Fitness: {best_fit}")
 
         # UMBRAL DE MEJORA AJUSTADO
@@ -188,6 +188,6 @@ def evolutive(Gen = 20, alpha = 0.8, beta = 0.2):
             reset_count = 0
             print("Reseting population")
 
-    return population, history
-
+    gc.collect()
+    return population
 
